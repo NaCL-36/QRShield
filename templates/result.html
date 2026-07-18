@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Security Report | QRShield{% endblock %}
+{% block content %}
+<section class="result-page cyber-grid">
+  <div class="container py-5">
+    <div class="row g-4 pt-5 align-items-stretch">
+      <div class="col-lg-4">
+        <div class="glass-card h-100 text-center result-asset">
+          <img src="{{ result.image_url }}" class="uploaded-image" alt="Uploaded QR image">
+          <h5>Decoded Content</h5>
+          <p class="decoded-text">{{ result.original_content }}</p>
+          {% if result.normalized_url %}<button class="btn btn-outline-cyber btn-sm" data-copy="{{ result.normalized_url }}"><i class="fa-regular fa-copy me-2"></i>Copy URL</button>{% endif %}
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="glass-card h-100">
+          <div class="d-flex flex-wrap gap-4 justify-content-between align-items-center">
+            <div><span class="eyebrow">Security Report</span><h1>{{ result.status }}</h1><p class="text-soft mb-0">{{ result.recommendation }}</p></div>
+            <div class="risk-circle risk-{{ result.status|lower }}" style="--p: {{ result.score }}%"><span>{{ result.score }}</span><small>/100</small></div>
+          </div>
+          <div class="status-banner status-{{ result.status|lower }} mt-4"><i class="fa-solid fa-shield-halved me-2"></i>{{ result.status }} security status</div>
+          <div class="report-grid mt-4">
+            <div><span>Decoded URL</span><strong>{{ result.normalized_url or 'Not a URL' }}</strong></div>
+            <div><span>Domain</span><strong>{{ result.domain or 'N/A' }}</strong></div>
+            <div><span>Scan Time</span><strong>{{ result.created_at }}</strong></div>
+          </div>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <button class="btn btn-cyber" id="downloadReport" data-content="{{ result.original_content|e }}"><i class="fa-solid fa-file-pdf me-2"></i>Download PDF Report</button>
+            <a class="btn btn-outline-cyber" href="{{ url_for('scan') }}">Scan Another</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <div class="col-lg-6">
+        <div class="glass-card h-100">
+          <h3>Detected Issues</h3>
+          {% if result.issues %}
+            {% for issue in result.issues %}
+            <div class="issue-item severity-{{ issue.severity|lower }}">
+              <div class="d-flex justify-content-between gap-3"><strong>{{ issue.title }}</strong><span>{{ issue.status }}</span></div>
+              <p>{{ issue.detail }}</p><small>{{ issue.recommendation }}</small>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="issue-item clean"><strong>No major issues detected</strong><p>QRShield did not identify common phishing or suspicious URL indicators.</p></div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass-card h-100">
+          <h3>Passed Checks</h3>
+          {% for check in result.checks %}
+          <div class="check-item"><i class="fa-solid fa-circle-check"></i><div><strong>{{ check.name }}</strong><p>{{ check.detail }}</p></div></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script id="scanResult" type="application/json">{{ result|tojson }}</script>
+{% endblock %}

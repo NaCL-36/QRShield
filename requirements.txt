@@ -1,0 +1,6 @@
+Flask>=3.0
+opencv-python>=4.10
+tldextract>=5.1
+validators>=0.33
+reportlab>=4.2
+qrcode>=7.4

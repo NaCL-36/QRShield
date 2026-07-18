@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Scan QR Code | QRShield{% endblock %}
+{% block content %}
+<section class="scan-page cyber-grid">
+  <div class="container py-5">
+    <div class="row justify-content-center pt-5">
+      <div class="col-lg-9">
+        <div class="section-heading text-center mb-4"><span class="eyebrow">Secure Upload</span><h1>Analyze a QR Code Image</h1><p>Upload a QR image to decode and inspect the hidden destination without opening it.</p></div>
+        {% if error %}<div class="alert alert-danger glass-alert"><i class="fa-solid fa-triangle-exclamation me-2"></i>{{ error }}</div>{% endif %}
+        <form class="glass-card upload-card" method="post" action="{{ url_for('analyze') }}" enctype="multipart/form-data" id="scanForm">
+          <label class="drop-zone" id="dropZone">
+            <input type="file" name="qr_image" id="qrImage" accept="image/*" required hidden>
+            <div class="drop-content">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <h4>Drag and drop your QR image</h4>
+              <p>or click to browse PNG, JPG, GIF, BMP, WEBP</p>
+            </div>
+            <img id="imagePreview" class="image-preview" alt="Uploaded QR preview">
+          </label>
+          <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+            <button class="btn btn-cyber btn-lg" type="submit"><i class="fa-solid fa-shield-virus me-2"></i>Analyze Now</button>
+            <a class="btn btn-outline-cyber btn-lg" href="{{ url_for('index') }}">Back Home</a>
+          </div>
+          <div class="processing-panel" id="processingPanel">
+            <div class="spinner-border text-info" role="status"></div>
+            <strong>Analyzing QR threat signals...</strong>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

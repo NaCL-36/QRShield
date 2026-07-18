@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero-section cyber-grid">
+  <div class="orb orb-one"></div><div class="orb orb-two"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center min-vh-100 py-5">
+      <div class="col-lg-6 fade-in">
+        <span class="eyebrow"><i class="fa-solid fa-shield-halved me-2"></i>Cybersecurity QR Intelligence</span>
+        <h1>Protect Yourself Before You Scan</h1>
+        <p class="hero-copy">QRShield analyzes QR Codes and warns users about malicious or suspicious links before they are opened.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a class="btn btn-cyber btn-lg" href="{{ url_for('scan') }}"><i class="fa-solid fa-qrcode me-2"></i>Analyze QR Code</a>
+          <a class="btn btn-outline-cyber btn-lg" href="#features">Learn More</a>
+        </div>
+        <div class="trust-row">
+          <span><i class="fa-solid fa-lock"></i> HTTPS Checks</span>
+          <span><i class="fa-solid fa-fingerprint"></i> Typosquatting</span>
+          <span><i class="fa-solid fa-file-pdf"></i> PDF Reports</span>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center fade-in delay-1">
+        <div class="hero-device glass-card">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="QRShield logo" class="hero-logo">
+          <div class="radar-ring"></div>
+          <div class="threat-list text-start">
+            <div><i class="fa-solid fa-circle-check text-success"></i> Domain reputation verified</div>
+            <div><i class="fa-solid fa-triangle-exclamation text-warning"></i> Shortener detection active</div>
+            <div><i class="fa-solid fa-ban text-danger"></i> Phishing indicators blocked</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="section-pad">
+  <div class="container">
+    <div class="section-heading text-center fade-in"><span class="eyebrow">Core Protection</span><h2>Security checks that explain the risk clearly</h2></div>
+    <div class="row g-4">
+      {% set features = [
+        ('fa-qrcode','QR Code Scanner','Upload QR images and extract hidden destinations safely.'),
+        ('fa-user-secret','Phishing Detection','Identify login traps, credential theft terms, and risky wording.'),
+        ('fa-earth-americas','Fake Domain Detection','Compare domains against known brands for typosquatting.'),
+        ('fa-gauge-high','Risk Score','Convert technical signals into a simple 0-100 score.'),
+        ('fa-clipboard-list','Detailed Security Report','Get plain-language explanations and recommendations.'),
+        ('fa-file-arrow-down','Download PDF Report','Export professional PDF evidence for every scan.')
+      ] %}
+      {% for icon, title, text in features %}
+      <div class="col-md-6 col-xl-4 fade-in">
+        <div class="feature-card glass-card h-100">
+          <div class="icon-bubble"><i class="fa-solid {{ icon }}"></i></div>
+          <h5>{{ title }}</h5>
+          <p>{{ text }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="dashboard" class="section-pad dashboard-band">
+  <div class="container">
+    <div class="row align-items-end mb-4">
+      <div class="col-lg-7"><span class="eyebrow">Local Dashboard</span><h2>Security statistics from your browser</h2></div>
+      <div class="col-lg-5 text-lg-end"><a class="btn btn-outline-cyber" href="{{ url_for('scan') }}">Run New Scan</a></div>
+    </div>
+    <div class="row g-4" id="dashboardCards">
+      <div class="col-sm-6 col-xl"><div class="stat-card glass-card"><span>Total Scans</span><strong data-stat="total">0</strong></div></div>
+      <div class="col-sm-6 col-xl"><div class="stat-card glass-card"><span>Safe Links</span><strong data-stat="safe">0</strong></div></div>
+      <div class="col-sm-6 col-xl"><div class="stat-card glass-card"><span>Suspicious Links</span><strong data-stat="suspicious">0</strong></div></div>
+      <div class="col-sm-6 col-xl"><div class="stat-card glass-card"><span>Dangerous Links</span><strong data-stat="dangerous">0</strong></div></div>
+      <div class="col-sm-6 col-xl"><div class="stat-card glass-card"><span>Latest Scan</span><strong data-stat="latest">None</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="history" class="section-pad">
+  <div class="container">
+    <div class="glass-card history-panel">
+      <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-4">
+        <div><span class="eyebrow">Scan History</span><h2 class="mb-0">Previous QR investigations</h2></div>
+        <button class="btn btn-outline-danger" id="clearHistory"><i class="fa-solid fa-trash me-2"></i>Delete History</button>
+      </div>
+      <input id="historySearch" class="form-control cyber-input mb-3" placeholder="Search decoded URLs or statuses...">
+      <div id="historyList" class="history-list"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
